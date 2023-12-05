@@ -26,8 +26,7 @@ final isAuthenticatedProvider = StreamProvider<UserInfo?>((ref) {
   final sessionManager = ref.watch(sessionManagerProvider);
 
   sessionManager.addListener(() {
-    // ignore: unused_result
-    ref.refresh(sessionManagerProvider);
+    ref.invalidateSelf();
   });
 
   return Stream.value(sessionManager.signedInUser);
