@@ -1,43 +1,28 @@
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:serverpod_auth_email_flutter/serverpod_auth_email_flutter.dart';
-import 'package:serverpod_auth_shared_flutter/serverpod_auth_shared_flutter.dart';
-import 'package:serverpod_flutter/serverpod_flutter.dart';
-import 'package:serverpod_sandbox_client/serverpod_sandbox_client.dart';
 import 'package:flutter/material.dart';
-
-late SessionManager sessionManager;
-late Client client;
-
-Future<void> initializeServerpodClient() async {
-  late String ipAddress;
-
-  ipAddress = 'localhost';
-  // ipAddress = '10.0.2.2';
-
-  client = Client(
-    'http://$ipAddress:8080/',
-    authenticationKeyManager: FlutterAuthenticationKeyManager(),
-  )..connectivityMonitor = FlutterConnectivityMonitor();
-
-  sessionManager = SessionManager(
-    caller: client.modules.auth,
-  );
-
-  await sessionManager.initialize();
-}
+import 'package:serverpod_sandbox_flutter/providers/serverpod.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await initializeServerpodClient();
-
-  runApp(const MyApp());
+  runApp(
+    const ProviderScope(
+      child: MyApp(),
+    ),
+  );
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerWidget {
   const MyApp({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final sessionManager = ref.watch(sessionManagerProvider);
+    final client = ref.watch(clientProvider);
+
+    final isAuthenticated = ref.watch(isAuthenticatedProvider);
+
     return MaterialApp(
         title: 'Serverpod Flutter Sandbox',
         home: Scaffold(
@@ -51,8 +36,17 @@ class MyApp extends StatelessWidget {
                 const Text(
                   'Serverpod Flutter Sandbox',
                 ),
-                sessionManager.isSignedIn
-                    ? Column(
+                isAuthenticated.when(
+                  data: (data) {
+                    if (data == null) {
+                      return SignInWithEmailButton(
+                        caller: client.modules.auth,
+                        onSignedIn: () {
+                          print('Signed in!');
+                        },
+                      );
+                    } else {
+                      return Column(
                         children: [
                           Text(
                               'Signed in as ${sessionManager.signedInUser!.email}'),
@@ -63,13 +57,12 @@ class MyApp extends StatelessWidget {
                             child: const Text('Sign out'),
                           ),
                         ],
-                      )
-                    : SignInWithEmailButton(
-                        caller: client.modules.auth,
-                        onSignedIn: () {
-                          print('Signed in!');
-                        },
-                      ),
+                      );
+                    }
+                  },
+                  loading: () => const CircularProgressIndicator(),
+                  error: (error, stackTrace) => Text('Error: $error'),
+                ),
               ],
             ),
           ),
