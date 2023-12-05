@@ -48,8 +48,7 @@ class MyApp extends ConsumerWidget {
                     } else {
                       return Column(
                         children: [
-                          Text(
-                              'Signed in as ${sessionManager.signedInUser!.email}'),
+                          Text('Signed in as ${data.email}'),
                           ElevatedButton(
                             onPressed: () async {
                               await sessionManager.signOut();
