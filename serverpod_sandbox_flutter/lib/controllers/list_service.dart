@@ -14,6 +14,10 @@ class ListService {
         .getListItems();
   }
 
+  // Future<ListItem> getItemById(int id) async {
+  //   return await ref.read(serverpodServiceProvider).client.listItem.get;
+  // }
+
   Future<void> addItem(String name) async {
     // await ref
     //     .read(serverpodServiceProvider)
@@ -23,6 +27,16 @@ class ListService {
     final client = ref.read(serverpodServiceProvider).client;
 
     await client.listItem.sendStreamMessage(ListItem(name: name));
+  }
+
+  Future<void> editItem(int id, String item) async {
+    // await ref.read(serverpodServiceProvider).client.listItem.editItem(item);
+
+    // final item = ref.read(serverpodServiceProvider).client.listItem.
+
+    final client = ref.read(serverpodServiceProvider).client;
+
+    await client.listItem.sendStreamMessage(EditListItem(id: id, data: item));
   }
 
   Future<void> removeItem(int id) async {
@@ -57,6 +71,15 @@ final listItemStreamProvider =
   await for (final item in client.listItem.stream) {
     if (item is ListItem) {
       activeItems.add(item);
+    }
+
+    if (item is EditListItem) {
+      activeItems = activeItems.map((element) {
+        if (element.id == item.id) {
+          element.name = item.data;
+        }
+        return element;
+      }).toList();
     }
 
     if (item is DeleteListItem) {

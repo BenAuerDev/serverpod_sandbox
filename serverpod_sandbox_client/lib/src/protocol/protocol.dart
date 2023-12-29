@@ -9,10 +9,12 @@ library protocol; // ignore_for_file: no_leading_underscores_for_library_prefixe
 
 import 'package:serverpod_client/serverpod_client.dart' as _i1;
 import 'delete_list_item.dart' as _i2;
-import 'list_item.dart' as _i3;
-import 'package:serverpod_sandbox_client/src/protocol/list_item.dart' as _i4;
-import 'package:serverpod_auth_client/module.dart' as _i5;
+import 'edit_list_item.dart' as _i3;
+import 'list_item.dart' as _i4;
+import 'package:serverpod_sandbox_client/src/protocol/list_item.dart' as _i5;
+import 'package:serverpod_auth_client/module.dart' as _i6;
 export 'delete_list_item.dart';
+export 'edit_list_item.dart';
 export 'list_item.dart';
 export 'client.dart';
 
@@ -37,22 +39,28 @@ class Protocol extends _i1.SerializationManager {
     if (t == _i2.DeleteListItem) {
       return _i2.DeleteListItem.fromJson(data, this) as T;
     }
-    if (t == _i3.ListItem) {
-      return _i3.ListItem.fromJson(data, this) as T;
+    if (t == _i3.EditListItem) {
+      return _i3.EditListItem.fromJson(data, this) as T;
+    }
+    if (t == _i4.ListItem) {
+      return _i4.ListItem.fromJson(data, this) as T;
     }
     if (t == _i1.getType<_i2.DeleteListItem?>()) {
       return (data != null ? _i2.DeleteListItem.fromJson(data, this) : null)
           as T;
     }
-    if (t == _i1.getType<_i3.ListItem?>()) {
-      return (data != null ? _i3.ListItem.fromJson(data, this) : null) as T;
+    if (t == _i1.getType<_i3.EditListItem?>()) {
+      return (data != null ? _i3.EditListItem.fromJson(data, this) : null) as T;
     }
-    if (t == List<_i4.ListItem>) {
-      return (data as List).map((e) => deserialize<_i4.ListItem>(e)).toList()
+    if (t == _i1.getType<_i4.ListItem?>()) {
+      return (data != null ? _i4.ListItem.fromJson(data, this) : null) as T;
+    }
+    if (t == List<_i5.ListItem>) {
+      return (data as List).map((e) => deserialize<_i5.ListItem>(e)).toList()
           as dynamic;
     }
     try {
-      return _i5.Protocol().deserialize<T>(data, t);
+      return _i6.Protocol().deserialize<T>(data, t);
     } catch (_) {}
     return super.deserialize<T>(data, t);
   }
@@ -60,14 +68,17 @@ class Protocol extends _i1.SerializationManager {
   @override
   String? getClassNameForObject(Object data) {
     String? className;
-    className = _i5.Protocol().getClassNameForObject(data);
+    className = _i6.Protocol().getClassNameForObject(data);
     if (className != null) {
       return 'serverpod_auth.$className';
     }
     if (data is _i2.DeleteListItem) {
       return 'DeleteListItem';
     }
-    if (data is _i3.ListItem) {
+    if (data is _i3.EditListItem) {
+      return 'EditListItem';
+    }
+    if (data is _i4.ListItem) {
       return 'ListItem';
     }
     return super.getClassNameForObject(data);
@@ -77,13 +88,16 @@ class Protocol extends _i1.SerializationManager {
   dynamic deserializeByClassName(Map<String, dynamic> data) {
     if (data['className'].startsWith('serverpod_auth.')) {
       data['className'] = data['className'].substring(15);
-      return _i5.Protocol().deserializeByClassName(data);
+      return _i6.Protocol().deserializeByClassName(data);
     }
     if (data['className'] == 'DeleteListItem') {
       return deserialize<_i2.DeleteListItem>(data['data']);
     }
+    if (data['className'] == 'EditListItem') {
+      return deserialize<_i3.EditListItem>(data['data']);
+    }
     if (data['className'] == 'ListItem') {
-      return deserialize<_i3.ListItem>(data['data']);
+      return deserialize<_i4.ListItem>(data['data']);
     }
     return super.deserializeByClassName(data);
   }

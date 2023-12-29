@@ -57,9 +57,9 @@ class Endpoints extends _i1.EndpointDispatch {
         'removeItem': _i1.MethodConnector(
           name: 'removeItem',
           params: {
-            'item': _i1.ParameterDescription(
-              name: 'item',
-              type: _i1.getType<_i3.ListItem>(),
+            'id': _i1.ParameterDescription(
+              name: 'id',
+              type: _i1.getType<int>(),
               nullable: false,
             )
           },
@@ -69,7 +69,7 @@ class Endpoints extends _i1.EndpointDispatch {
           ) async =>
               (endpoints['listItem'] as _i2.ListItemEndpoint).removeItem(
             session,
-            params['item'],
+            params['id'],
           ),
         ),
       },

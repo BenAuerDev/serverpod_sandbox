@@ -11,9 +11,11 @@ import 'package:serverpod/serverpod.dart' as _i1;
 import 'package:serverpod/protocol.dart' as _i2;
 import 'package:serverpod_auth_server/module.dart' as _i3;
 import 'delete_list_item.dart' as _i4;
-import 'list_item.dart' as _i5;
-import 'package:serverpod_sandbox_server/src/generated/list_item.dart' as _i6;
+import 'edit_list_item.dart' as _i5;
+import 'list_item.dart' as _i6;
+import 'package:serverpod_sandbox_server/src/generated/list_item.dart' as _i7;
 export 'delete_list_item.dart';
+export 'edit_list_item.dart';
 export 'list_item.dart';
 
 class Protocol extends _i1.SerializationManagerServer {
@@ -78,18 +80,24 @@ class Protocol extends _i1.SerializationManagerServer {
     if (t == _i4.DeleteListItem) {
       return _i4.DeleteListItem.fromJson(data, this) as T;
     }
-    if (t == _i5.ListItem) {
-      return _i5.ListItem.fromJson(data, this) as T;
+    if (t == _i5.EditListItem) {
+      return _i5.EditListItem.fromJson(data, this) as T;
+    }
+    if (t == _i6.ListItem) {
+      return _i6.ListItem.fromJson(data, this) as T;
     }
     if (t == _i1.getType<_i4.DeleteListItem?>()) {
       return (data != null ? _i4.DeleteListItem.fromJson(data, this) : null)
           as T;
     }
-    if (t == _i1.getType<_i5.ListItem?>()) {
-      return (data != null ? _i5.ListItem.fromJson(data, this) : null) as T;
+    if (t == _i1.getType<_i5.EditListItem?>()) {
+      return (data != null ? _i5.EditListItem.fromJson(data, this) : null) as T;
     }
-    if (t == List<_i6.ListItem>) {
-      return (data as List).map((e) => deserialize<_i6.ListItem>(e)).toList()
+    if (t == _i1.getType<_i6.ListItem?>()) {
+      return (data != null ? _i6.ListItem.fromJson(data, this) : null) as T;
+    }
+    if (t == List<_i7.ListItem>) {
+      return (data as List).map((e) => deserialize<_i7.ListItem>(e)).toList()
           as dynamic;
     }
     try {
@@ -111,7 +119,10 @@ class Protocol extends _i1.SerializationManagerServer {
     if (data is _i4.DeleteListItem) {
       return 'DeleteListItem';
     }
-    if (data is _i5.ListItem) {
+    if (data is _i5.EditListItem) {
+      return 'EditListItem';
+    }
+    if (data is _i6.ListItem) {
       return 'ListItem';
     }
     return super.getClassNameForObject(data);
@@ -126,8 +137,11 @@ class Protocol extends _i1.SerializationManagerServer {
     if (data['className'] == 'DeleteListItem') {
       return deserialize<_i4.DeleteListItem>(data['data']);
     }
+    if (data['className'] == 'EditListItem') {
+      return deserialize<_i5.EditListItem>(data['data']);
+    }
     if (data['className'] == 'ListItem') {
-      return deserialize<_i5.ListItem>(data['data']);
+      return deserialize<_i6.ListItem>(data['data']);
     }
     return super.deserializeByClassName(data);
   }
@@ -147,8 +161,8 @@ class Protocol extends _i1.SerializationManagerServer {
       }
     }
     switch (t) {
-      case _i5.ListItem:
-        return _i5.ListItem.t;
+      case _i6.ListItem:
+        return _i6.ListItem.t;
     }
     return null;
   }

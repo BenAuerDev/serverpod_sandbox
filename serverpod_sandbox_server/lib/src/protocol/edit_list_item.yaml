@@ -1,0 +1,4 @@
+class: EditListItem
+fields:
+  id: int
+  data: String

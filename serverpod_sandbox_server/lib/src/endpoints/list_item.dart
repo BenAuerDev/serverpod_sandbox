@@ -6,8 +6,18 @@ class ListItemEndpoint extends Endpoint {
     return await ListItem.find(session);
   }
 
+  Future<ListItem?> getItemById(Session session, int id) async {
+    return await ListItem.findById(session, id);
+  }
+
   Future<void> addItem(Session session, ListItem item) async {
     await ListItem.insert(session, item);
+  }
+
+  Future<void> editItem(Session session, EditListItem item) async {
+    final row = await ListItem.findById(session, item.id);
+    row!.name = item.data;
+    await ListItem.update(session, row);
   }
 
   Future<void> removeItem(Session session, int id) async {
@@ -36,6 +46,10 @@ class ListItemEndpoint extends Endpoint {
   ) async {
     if (message is ListItem) {
       await addItem(session, message);
+    }
+
+    if (message is EditListItem) {
+      await editItem(session, message);
     }
 
     if (message is DeleteListItem) {

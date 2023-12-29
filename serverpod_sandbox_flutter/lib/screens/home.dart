@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:serverpod_sandbox_flutter/controllers/list_service.dart';
+import 'package:serverpod_sandbox_flutter/edit_form.dart';
 import 'package:serverpod_sandbox_flutter/form.dart';
 import 'package:serverpod_sandbox_flutter/controllers/serverpod_service.dart';
 
@@ -45,11 +46,28 @@ class HomeScreen extends ConsumerWidget {
                             final item = items[index];
                             return ListTile(
                               title: Text(item.name),
-                              trailing: IconButton(
-                                icon: const Icon(Icons.delete),
-                                onPressed: () {
-                                  listService.removeItem(item.id!);
-                                },
+                              trailing: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  IconButton(
+                                    icon: const Icon(Icons.edit),
+                                    onPressed: () {
+                                      showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return EditForm(
+                                              item: item,
+                                            );
+                                          });
+                                    },
+                                  ),
+                                  IconButton(
+                                    icon: const Icon(Icons.delete),
+                                    onPressed: () {
+                                      listService.removeItem(item.id!);
+                                    },
+                                  ),
+                                ],
                               ),
                             );
                           },
