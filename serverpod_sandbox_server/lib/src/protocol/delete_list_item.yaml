@@ -1,0 +1,3 @@
+class: DeleteListItem
+fields:
+  id: int

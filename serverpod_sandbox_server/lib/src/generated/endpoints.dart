@@ -39,9 +39,9 @@ class Endpoints extends _i1.EndpointDispatch {
         'addItem': _i1.MethodConnector(
           name: 'addItem',
           params: {
-            'name': _i1.ParameterDescription(
-              name: 'name',
-              type: _i1.getType<String>(),
+            'item': _i1.ParameterDescription(
+              name: 'item',
+              type: _i1.getType<_i3.ListItem>(),
               nullable: false,
             )
           },
@@ -51,7 +51,7 @@ class Endpoints extends _i1.EndpointDispatch {
           ) async =>
               (endpoints['listItem'] as _i2.ListItemEndpoint).addItem(
             session,
-            params['name'],
+            params['item'],
           ),
         ),
         'removeItem': _i1.MethodConnector(

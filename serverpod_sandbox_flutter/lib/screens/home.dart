@@ -37,7 +37,7 @@ class HomeScreen extends ConsumerWidget {
               ),
               const SizedBox(height: 20),
               Expanded(
-                child: ref.watch(listProvider).when(
+                child: ref.watch(listItemStreamProvider).when(
                       data: (items) {
                         return ListView.builder(
                           itemCount: items.length,
@@ -48,7 +48,7 @@ class HomeScreen extends ConsumerWidget {
                               trailing: IconButton(
                                 icon: const Icon(Icons.delete),
                                 onPressed: () {
-                                  listService.removeItem(item);
+                                  listService.removeItem(item.id!);
                                 },
                               ),
                             );

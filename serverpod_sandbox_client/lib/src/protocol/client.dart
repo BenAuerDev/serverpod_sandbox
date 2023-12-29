@@ -26,10 +26,11 @@ class _EndpointListItem extends _i1.EndpointRef {
         {},
       );
 
-  _i2.Future<void> addItem(String name) => caller.callServerEndpoint<void>(
+  _i2.Future<void> addItem(_i3.ListItem item) =>
+      caller.callServerEndpoint<void>(
         'listItem',
         'addItem',
-        {'name': name},
+        {'item': item},
       );
 
   _i2.Future<void> removeItem(_i3.ListItem item) =>
