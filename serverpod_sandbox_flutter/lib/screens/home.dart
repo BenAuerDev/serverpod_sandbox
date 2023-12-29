@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:serverpod_sandbox_flutter/controllers/list_service.dart';
 import 'package:serverpod_sandbox_flutter/form.dart';
-import 'package:serverpod_sandbox_flutter/controllers/serverpod.dart';
+import 'package:serverpod_sandbox_flutter/controllers/serverpod_service.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -9,6 +10,7 @@ class HomeScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final sessionManager = ref.watch(serverpodServiceProvider).sessionManager;
+    final listService = ref.watch(listServiceProvider);
 
     return Scaffold(
       floatingActionButton: FloatingActionButton(
@@ -24,13 +26,43 @@ class HomeScreen extends ConsumerWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text('Signed in as ${sessionManager.signedInUser?.email}'),
+              const SizedBox(height: 20),
               const ItemForm(),
+              const SizedBox(height: 20),
               TextButton(
-                  onPressed: () {
-                    // for testing from other widget than form
-                    // TODO: implement
-                  },
-                  child: const Text('Add Test item')),
+                onPressed: () {
+                  ref.read(listServiceProvider).addItem('Test item');
+                },
+                child: const Text('Add Test item'),
+              ),
+              const SizedBox(height: 20),
+              Expanded(
+                child: ref.watch(listProvider).when(
+                      data: (items) {
+                        return ListView.builder(
+                          itemCount: items.length,
+                          itemBuilder: (context, index) {
+                            final item = items[index];
+                            return ListTile(
+                              title: Text(item.name),
+                              trailing: IconButton(
+                                icon: const Icon(Icons.delete),
+                                onPressed: () {
+                                  listService.removeItem(item);
+                                },
+                              ),
+                            );
+                          },
+                        );
+                      },
+                      loading: () => const Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                      error: (error, stackTrace) => const Center(
+                        child: Text('Error'),
+                      ),
+                    ),
+              ),
             ],
           ),
         ),

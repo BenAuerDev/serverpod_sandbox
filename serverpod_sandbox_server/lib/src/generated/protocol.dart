@@ -10,8 +10,9 @@ library protocol; // ignore_for_file: no_leading_underscores_for_library_prefixe
 import 'package:serverpod/serverpod.dart' as _i1;
 import 'package:serverpod/protocol.dart' as _i2;
 import 'package:serverpod_auth_server/module.dart' as _i3;
-import 'example.dart' as _i4;
-export 'example.dart';
+import 'list_item.dart' as _i4;
+import 'package:serverpod_sandbox_server/src/generated/list_item.dart' as _i5;
+export 'list_item.dart';
 
 class Protocol extends _i1.SerializationManagerServer {
   Protocol._();
@@ -23,6 +24,42 @@ class Protocol extends _i1.SerializationManagerServer {
   static final Protocol _instance = Protocol._();
 
   static final targetDatabaseDefinition = _i2.DatabaseDefinition(tables: [
+    _i2.TableDefinition(
+      name: 'sandbox_list_item',
+      schema: 'public',
+      columns: [
+        _i2.ColumnDefinition(
+          name: 'id',
+          columnType: _i2.ColumnType.integer,
+          isNullable: false,
+          dartType: 'int?',
+          columnDefault: 'nextval(\'sandbox_list_item_id_seq\'::regclass)',
+        ),
+        _i2.ColumnDefinition(
+          name: 'name',
+          columnType: _i2.ColumnType.text,
+          isNullable: false,
+          dartType: 'String',
+        ),
+      ],
+      foreignKeys: [],
+      indexes: [
+        _i2.IndexDefinition(
+          indexName: 'sandbox_list_item_pkey',
+          tableSpace: null,
+          elements: [
+            _i2.IndexElementDefinition(
+              type: _i2.IndexElementDefinitionType.column,
+              definition: 'id',
+            )
+          ],
+          type: 'btree',
+          isUnique: true,
+          isPrimary: true,
+        )
+      ],
+      managed: true,
+    ),
     ..._i3.Protocol.targetDatabaseDefinition.tables,
     ..._i2.Protocol.targetDatabaseDefinition.tables,
   ]);
@@ -36,11 +73,15 @@ class Protocol extends _i1.SerializationManagerServer {
     if (customConstructors.containsKey(t)) {
       return customConstructors[t]!(data, this) as T;
     }
-    if (t == _i4.Example) {
-      return _i4.Example.fromJson(data, this) as T;
+    if (t == _i4.ListItem) {
+      return _i4.ListItem.fromJson(data, this) as T;
     }
-    if (t == _i1.getType<_i4.Example?>()) {
-      return (data != null ? _i4.Example.fromJson(data, this) : null) as T;
+    if (t == _i1.getType<_i4.ListItem?>()) {
+      return (data != null ? _i4.ListItem.fromJson(data, this) : null) as T;
+    }
+    if (t == List<_i5.ListItem>) {
+      return (data as List).map((e) => deserialize<_i5.ListItem>(e)).toList()
+          as dynamic;
     }
     try {
       return _i3.Protocol().deserialize<T>(data, t);
@@ -58,8 +99,8 @@ class Protocol extends _i1.SerializationManagerServer {
     if (className != null) {
       return 'serverpod_auth.$className';
     }
-    if (data is _i4.Example) {
-      return 'Example';
+    if (data is _i4.ListItem) {
+      return 'ListItem';
     }
     return super.getClassNameForObject(data);
   }
@@ -70,8 +111,8 @@ class Protocol extends _i1.SerializationManagerServer {
       data['className'] = data['className'].substring(15);
       return _i3.Protocol().deserializeByClassName(data);
     }
-    if (data['className'] == 'Example') {
-      return deserialize<_i4.Example>(data['data']);
+    if (data['className'] == 'ListItem') {
+      return deserialize<_i4.ListItem>(data['data']);
     }
     return super.deserializeByClassName(data);
   }
@@ -89,6 +130,10 @@ class Protocol extends _i1.SerializationManagerServer {
       if (table != null) {
         return table;
       }
+    }
+    switch (t) {
+      case _i4.ListItem:
+        return _i4.ListItem.t;
     }
     return null;
   }

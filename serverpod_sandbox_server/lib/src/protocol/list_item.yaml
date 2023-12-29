@@ -1,0 +1,4 @@
+class: ListItem
+table: sandbox_list_item
+fields: 
+  name: String

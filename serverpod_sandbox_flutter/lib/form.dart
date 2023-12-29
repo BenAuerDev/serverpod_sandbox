@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:serverpod_sandbox_flutter/controllers/list_service.dart';
 
 class ItemForm extends ConsumerWidget {
   const ItemForm({Key? key}) : super(key: key);
@@ -21,7 +22,7 @@ class ItemForm extends ConsumerWidget {
           ),
           TextButton(
             onPressed: () async {
-              // TODO: immplement add item
+              ref.read(listServiceProvider).addItem(nameController.text);
 
               nameController.clear();
             },
