@@ -4,26 +4,30 @@ import 'package:serverpod_flutter/serverpod_flutter.dart';
 import 'package:serverpod_sandbox_client/serverpod_sandbox_client.dart';
 import 'package:serverpod_auth_client/src/protocol/user_info.dart';
 
-final clientProvider = Provider<Client>((ref) {
+class ServerpodService {
+  ServerpodService(this.ref) {
+    sessionManager = SessionManager(
+      caller: client.modules.auth,
+    );
+    sessionManager.initialize();
+  }
+  final Ref ref;
+
   final client = Client(
     'http://localhost:8080/',
     authenticationKeyManager: FlutterAuthenticationKeyManager(),
   )..connectivityMonitor = FlutterConnectivityMonitor();
-  return client;
-});
 
-final sessionManagerProvider = Provider<SessionManager>((ref) {
-  final client = ref.watch(clientProvider);
-  final sessionManager = SessionManager(
-    caller: client.modules.auth,
-  );
-  sessionManager.initialize().then((value) => value);
+  late SessionManager sessionManager;
+  SessionManager get session => sessionManager;
+}
 
-  return sessionManager;
+final serverpodServiceProvider = Provider<ServerpodService>((ref) {
+  return ServerpodService(ref);
 });
 
 final isAuthenticatedProvider = StreamProvider<UserInfo?>((ref) {
-  final sessionManager = ref.watch(sessionManagerProvider);
+  final sessionManager = ref.watch(serverpodServiceProvider).sessionManager;
 
   sessionManager.addListener(() {
     ref.invalidateSelf();

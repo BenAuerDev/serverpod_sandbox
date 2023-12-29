@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:serverpod_sandbox_flutter/form.dart';
-import 'package:serverpod_sandbox_flutter/providers/serverpod.dart';
+import 'package:serverpod_sandbox_flutter/controllers/serverpod.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final sessionManager = ref.watch(sessionManagerProvider);
+    final sessionManager = ref.watch(serverpodServiceProvider).sessionManager;
 
     return Scaffold(
       floatingActionButton: FloatingActionButton(

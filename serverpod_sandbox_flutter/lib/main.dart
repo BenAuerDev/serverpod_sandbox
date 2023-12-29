@@ -1,6 +1,7 @@
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter/material.dart';
-import 'package:serverpod_sandbox_flutter/providers/serverpod.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+import 'package:serverpod_sandbox_flutter/controllers/serverpod.dart';
 import 'package:serverpod_sandbox_flutter/screens/auth.dart';
 import 'package:serverpod_sandbox_flutter/screens/home.dart';
 
@@ -22,8 +23,24 @@ class MyApp extends ConsumerWidget {
     final isAuthenticated = ref.watch(isAuthenticatedProvider);
 
     return MaterialApp(
-      title: 'Serverpod Flutter Sandbox',
-      home: isAuthenticated.hasValue ? const HomeScreen() : const AuthScreen(),
-    );
+        title: 'Serverpod Flutter Sandbox',
+        home: isAuthenticated.when(
+          data: (userInfo) {
+            if (userInfo == null)
+              return const AuthScreen();
+            else
+              return const HomeScreen();
+          },
+          error: (error, stackTrace) => const Scaffold(
+            body: Center(
+              child: Text('Error'),
+            ),
+          ),
+          loading: () => const Scaffold(
+            body: Center(
+              child: CircularProgressIndicator(),
+            ),
+          ),
+        ));
   }
 }
