@@ -53,16 +53,17 @@ final listItemStreamProvider =
   });
 
   var activeItems = <ListItem>[];
+
   await for (final item in client.listItem.stream) {
     if (item is ListItem) {
       activeItems.add(item);
-      yield activeItems;
     }
 
     if (item is DeleteListItem) {
       activeItems =
           activeItems.where((element) => element.id != item.id).toList();
-      yield activeItems;
     }
+
+    yield activeItems;
   }
 });
