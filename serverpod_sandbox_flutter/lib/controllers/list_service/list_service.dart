@@ -1,6 +1,9 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:serverpod_sandbox_client/serverpod_sandbox_client.dart';
 import 'package:serverpod_sandbox_flutter/controllers/serverpod_service.dart';
+
+part 'list_service.g.dart';
 
 class ListService {
   ListService(this.ref);
@@ -14,51 +17,35 @@ class ListService {
         .getListItems();
   }
 
-  // Future<ListItem> getItemById(int id) async {
-  //   return await ref.read(serverpodServiceProvider).client.listItem.get;
-  // }
-
   Future<void> addItem(String name) async {
-    // await ref
-    //     .read(serverpodServiceProvider)
-    //     .client
-    //     .listItem
-    //     .addItem(ListItem(name: name));
     final client = ref.read(serverpodServiceProvider).client;
 
     await client.listItem.sendStreamMessage(ListItem(name: name));
   }
 
   Future<void> editItem(int id, String item) async {
-    // await ref.read(serverpodServiceProvider).client.listItem.editItem(item);
-
-    // final item = ref.read(serverpodServiceProvider).client.listItem.
-
     final client = ref.read(serverpodServiceProvider).client;
 
     await client.listItem.sendStreamMessage(EditListItem(id: id, data: item));
   }
 
   Future<void> removeItem(int id) async {
-    // await ref.read(serverpodServiceProvider).client.listItem.removeItem(item);
-
     final client = ref.read(serverpodServiceProvider).client;
 
     await client.listItem.sendStreamMessage(DeleteListItem(id: id));
   }
 }
 
-final listServiceProvider = Provider<ListService>(((ref) {
-  return ListService(ref);
-}));
+@riverpod
+ListService listService(Ref ref) => ListService(ref);
 
-final listProvider = FutureProvider<List<ListItem>>((ref) {
-  return ref.read(listServiceProvider).getAllItems();
-});
+@riverpod
+Future<List<ListItem>> listItems(Ref ref) =>
+    ref.read(listServiceProvider).getAllItems();
 
-final listItemStreamProvider =
-    StreamProvider.autoDispose<List<ListItem>>((ref) async* {
-  final client = ref.watch(serverpodServiceProvider).client;
+@riverpod
+Stream<List<ListItem>> listItemStream(ListItemStreamRef ref) async* {
+  final client = ref.read(serverpodServiceProvider).client;
 
   await client.openStreamingConnection();
 
@@ -89,4 +76,4 @@ final listItemStreamProvider =
 
     yield activeItems;
   }
-});
+}

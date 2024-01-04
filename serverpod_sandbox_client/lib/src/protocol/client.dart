@@ -9,9 +9,11 @@
 import 'package:serverpod_client/serverpod_client.dart' as _i1;
 import 'dart:async' as _i2;
 import 'package:serverpod_sandbox_client/src/protocol/list_item.dart' as _i3;
-import 'package:serverpod_auth_client/module.dart' as _i4;
-import 'dart:io' as _i5;
-import 'protocol.dart' as _i6;
+import 'package:serverpod_sandbox_client/src/protocol/edit_list_item.dart'
+    as _i4;
+import 'package:serverpod_auth_client/module.dart' as _i5;
+import 'dart:io' as _i6;
+import 'protocol.dart' as _i7;
 
 class _EndpointListItem extends _i1.EndpointRef {
   _EndpointListItem(_i1.EndpointCaller caller) : super(caller);
@@ -26,10 +28,24 @@ class _EndpointListItem extends _i1.EndpointRef {
         {},
       );
 
+  _i2.Future<_i3.ListItem?> getItemById(int id) =>
+      caller.callServerEndpoint<_i3.ListItem?>(
+        'listItem',
+        'getItemById',
+        {'id': id},
+      );
+
   _i2.Future<void> addItem(_i3.ListItem item) =>
       caller.callServerEndpoint<void>(
         'listItem',
         'addItem',
+        {'item': item},
+      );
+
+  _i2.Future<void> editItem(_i4.EditListItem item) =>
+      caller.callServerEndpoint<void>(
+        'listItem',
+        'editItem',
         {'item': item},
       );
 
@@ -42,20 +58,20 @@ class _EndpointListItem extends _i1.EndpointRef {
 
 class _Modules {
   _Modules(Client client) {
-    auth = _i4.Caller(client);
+    auth = _i5.Caller(client);
   }
 
-  late final _i4.Caller auth;
+  late final _i5.Caller auth;
 }
 
 class Client extends _i1.ServerpodClient {
   Client(
     String host, {
-    _i5.SecurityContext? context,
+    _i6.SecurityContext? context,
     _i1.AuthenticationKeyManager? authenticationKeyManager,
   }) : super(
           host,
-          _i6.Protocol(),
+          _i7.Protocol(),
           context: context,
           authenticationKeyManager: authenticationKeyManager,
         ) {

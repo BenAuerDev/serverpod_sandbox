@@ -11,7 +11,11 @@ class ListItemEndpoint extends Endpoint {
   }
 
   Future<void> addItem(Session session, ListItem item) async {
-    await ListItem.insert(session, item);
+    try {
+      await ListItem.insert(session, item);
+    } catch (e) {
+      print(e);
+    }
   }
 
   Future<void> editItem(Session session, EditListItem item) async {

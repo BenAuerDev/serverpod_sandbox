@@ -9,7 +9,9 @@
 import 'package:serverpod/serverpod.dart' as _i1;
 import '../endpoints/list_item.dart' as _i2;
 import 'package:serverpod_sandbox_server/src/generated/list_item.dart' as _i3;
-import 'package:serverpod_auth_server/module.dart' as _i4;
+import 'package:serverpod_sandbox_server/src/generated/edit_list_item.dart'
+    as _i4;
+import 'package:serverpod_auth_server/module.dart' as _i5;
 
 class Endpoints extends _i1.EndpointDispatch {
   @override
@@ -36,6 +38,24 @@ class Endpoints extends _i1.EndpointDispatch {
               (endpoints['listItem'] as _i2.ListItemEndpoint)
                   .getListItems(session),
         ),
+        'getItemById': _i1.MethodConnector(
+          name: 'getItemById',
+          params: {
+            'id': _i1.ParameterDescription(
+              name: 'id',
+              type: _i1.getType<int>(),
+              nullable: false,
+            )
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['listItem'] as _i2.ListItemEndpoint).getItemById(
+            session,
+            params['id'],
+          ),
+        ),
         'addItem': _i1.MethodConnector(
           name: 'addItem',
           params: {
@@ -50,6 +70,24 @@ class Endpoints extends _i1.EndpointDispatch {
             Map<String, dynamic> params,
           ) async =>
               (endpoints['listItem'] as _i2.ListItemEndpoint).addItem(
+            session,
+            params['item'],
+          ),
+        ),
+        'editItem': _i1.MethodConnector(
+          name: 'editItem',
+          params: {
+            'item': _i1.ParameterDescription(
+              name: 'item',
+              type: _i1.getType<_i4.EditListItem>(),
+              nullable: false,
+            )
+          },
+          call: (
+            _i1.Session session,
+            Map<String, dynamic> params,
+          ) async =>
+              (endpoints['listItem'] as _i2.ListItemEndpoint).editItem(
             session,
             params['item'],
           ),
@@ -74,6 +112,6 @@ class Endpoints extends _i1.EndpointDispatch {
         ),
       },
     );
-    modules['serverpod_auth'] = _i4.Endpoints()..initializeEndpoints(server);
+    modules['serverpod_auth'] = _i5.Endpoints()..initializeEndpoints(server);
   }
 }

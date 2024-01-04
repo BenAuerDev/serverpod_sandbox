@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:serverpod_sandbox_flutter/controllers/list_service.dart';
+import 'package:serverpod_sandbox_flutter/controllers/list_service/list_service.dart';
 import 'package:serverpod_sandbox_flutter/edit_form.dart';
-import 'package:serverpod_sandbox_flutter/form.dart';
 import 'package:serverpod_sandbox_flutter/controllers/serverpod_service.dart';
 
 class HomeScreen extends ConsumerWidget {
@@ -28,7 +27,16 @@ class HomeScreen extends ConsumerWidget {
             children: [
               Text('Signed in as ${sessionManager.signedInUser?.email}'),
               const SizedBox(height: 20),
-              const ItemForm(),
+              TextButton(
+                child: const Text('Add item'),
+                onPressed: () {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return DialogForm();
+                      });
+                },
+              ),
               const SizedBox(height: 20),
               TextButton(
                 onPressed: () {
@@ -55,7 +63,7 @@ class HomeScreen extends ConsumerWidget {
                                       showDialog(
                                           context: context,
                                           builder: (BuildContext context) {
-                                            return EditForm(
+                                            return DialogForm(
                                               item: item,
                                             );
                                           });
