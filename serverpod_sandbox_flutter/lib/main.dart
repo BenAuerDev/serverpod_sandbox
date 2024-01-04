@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import 'package:serverpod_sandbox_flutter/controllers/serverpod_service.dart';
+import 'package:serverpod_sandbox_flutter/controllers/serverpod_service/serverpod_service.dart';
 import 'package:serverpod_sandbox_flutter/screens/auth.dart';
 import 'package:serverpod_sandbox_flutter/screens/home.dart';
 

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:serverpod_sandbox_flutter/controllers/list_service/list_service.dart';
 import 'package:serverpod_sandbox_flutter/edit_form.dart';
-import 'package:serverpod_sandbox_flutter/controllers/serverpod_service.dart';
+import 'package:serverpod_sandbox_flutter/controllers/serverpod_service/serverpod_service.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});

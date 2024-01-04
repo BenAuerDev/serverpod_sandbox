@@ -1,7 +1,7 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:serverpod_sandbox_client/serverpod_sandbox_client.dart';
-import 'package:serverpod_sandbox_flutter/controllers/serverpod_service.dart';
+import 'package:serverpod_sandbox_flutter/controllers/serverpod_service/serverpod_service.dart';
 
 part 'list_service.g.dart';
 
